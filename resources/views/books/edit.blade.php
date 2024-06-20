@@ -1,5 +1,4 @@
 <x-layout>
-    
     <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-12 col-md-8">
@@ -16,17 +15,15 @@
                     </div>
                     
                     <div class="mb-3">
-                        <label for="author" class="form-label">Autore</label>
-                        <input type="text" value="{{ old('author', $book->author) }}" name="author" class="form-control" id="author">
-                        @error('author')
-                        <span class="small text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Descrizione</label>
-                        <textarea name="description" class="form-control" id="description">{{ old('description', $book->description) }}</textarea>
-                        @error('description')
+                        <label for="author_id" class="form-label">Autore</label>
+                        <select name="author_id" class="form-control" id="author_id">
+                            @foreach ($authors as $author)
+                                <option value="{{ $author->id }}" {{ $author->id == old('author_id', $book->author_id) ? 'selected' : '' }}>
+                                    {{ $author->firstname }} {{ $author->lastname }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('author_id')
                         <span class="small text-danger">{{ $message }}</span>
                         @enderror
                     </div>
@@ -44,5 +41,5 @@
             </div>
         </div>
     </div>
-    
 </x-layout>
+

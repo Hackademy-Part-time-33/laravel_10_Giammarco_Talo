@@ -9,7 +9,8 @@ use App\Models\Book;
 
 class BookController extends Controller
 {
-    public function homepage() {
+    public function homepage()
+    {
         $books = Book::all();
         return view('homepage', compact('books'));
     }
@@ -28,10 +29,16 @@ class BookController extends Controller
     
     public function store(BookCreateRequest $request)
     {
+        // Salvataggio dell'immagine
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('public/images');
+        }
+        
         Book::create([
             'title' => $request->title,
             'year' => $request->year,
-            'image' => $request->image,
+            'image' => $imagePath,
             'author_id' => $request->author_id,
         ]);
         
@@ -52,10 +59,16 @@ class BookController extends Controller
     
     public function update(BookEditRequest $request, Book $book)
     {
+        // Salvataggio dell'immagine
+        $imagePath = $book->image;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('public/images');
+        }
+        
         $book->update([
             'title' => $request->title,
             'year' => $request->year,
-            'image' => $request->image,
+            'image' => $imagePath,
             'author_id' => $request->author_id,
         ]);
         
@@ -71,4 +84,3 @@ class BookController extends Controller
         return redirect()->route('books.index');
     }
 }
-
